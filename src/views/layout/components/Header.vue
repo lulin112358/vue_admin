@@ -1,49 +1,21 @@
 <template>
-  <div class="head-container clearfix">
-    <div class="header-left">
-      <showAside :toggle-click="toggleClick"/>
-      <breadcrumb />
-    </div>
-    
-    <div class="header-right">
-      <div class="header-user-con">
-        <!-- 全屏显示 -->
-        <div class="btn-fullscreen" @click="handleFullScreen">
-          <el-tooltip effect="dark" :content="fullscreen?$t('header.cancelFullScreen'):$t('header.fullScreen')" placement="bottom">
-            <i class="el-icon-rank"></i>
-          </el-tooltip>
+  <div class="header-right">
+    <div class="header-user-con">
+      <!-- 用户名下拉菜单 -->
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          {{username }}<i class="el-icon-caret-bottom"/>
         </div>
-        <!-- 多语言 -->
-        <select-lang></select-lang>
-        <!-- 消息中心 -->
-        <div class="btn-bell">
-          <el-tooltip effect="dark" :content="$t('header.message')" placement="bottom">
-            <router-link to="/tabs">
-             <i class="el-icon-bell"></i>
-             </router-link>
-          </el-tooltip>
-          <span class="btn-bell-badge" v-if="message"></span>
-        </div>
-        <!-- 用户名下拉菜单 -->
-        <el-dropdown class="avatar-container" trigger="click">
-          <div class="avatar-wrapper">
-            <img
-              src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3266090804,66355162&fm=26&gp=0.jpg"
-              class="user-avatar"
-            >
-            {{username }}<i class="el-icon-caret-bottom"/>
-          </div>
-          <el-dropdown-menu slot="dropdown" class="user-dropdown">
-            <router-link class="inlineBlock" to="/home">
-              <el-dropdown-item>{{$t('route.home')}}</el-dropdown-item>
-            </router-link>
-            <el-dropdown-item>{{$t('header.setting')}}</el-dropdown-item>
-            <el-dropdown-item divided>
-              <span style="display:block;" @click="logout">{{$t('header.logout')}}</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <router-link class="inlineBlock" to="/home">
+            <el-dropdown-item>首页</el-dropdown-item>
+          </router-link>
+          <el-dropdown-item>个人设置</el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="logout">退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -84,6 +56,7 @@ export default {
     logout(command) {
       this.$store.commit('TAGES_LIST',[])
       this.$store.commit('SET_BREAD',['home'])
+      this.$store.commit('COMMIT_TOKEN',{token: ""})
       this.$router.push("/login");
     },
     // 全屏事件
@@ -117,75 +90,19 @@ export default {
 }; 
 </script>
 <style lang="scss" scoped>
-.head-container {
-  height: 50px;
-  line-height: 50px;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-    0 0 3px 0 rgba(0, 0, 0, 0.04);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-  border-bottom: 1px solid #f0f0f0;
-}
-.header-left {
-  float: left;
-}
 .header-right {
-  float: right;
+  width: 100px;
   padding-right: 50px;
+  float: right;
 }
 .header-user-con {
   display: flex;
   height: 50px;
   align-items: center;
 }
-.btn-fullscreen {
-  transform: rotate(45deg);
-  margin-right: 5px;
-  font-size: 24px;
-}
 
-.btn-fullscreen {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 15px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-.btn-bell{
-  position: relative;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 24px;
-  margin-right: 20px;
-  margin-bottom: 15px;
-}
-.btn-bell-badge {
-  position: absolute;
-  right: 0;
-  top: 8px;
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background: #f56c6c;
-}
-.btn-bell .el-icon-bell {
-  color: #666;
-}
 .user-name {
   margin-left: 10px;
-}
-.user-avator {
-  margin-left: 20px;
-}
-.user-avator img {
-  display: block;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
 }
 .el-dropdown-link {
   color: #fff;
@@ -201,9 +118,9 @@ export default {
   // right: 35px;
   .avatar-wrapper {
     cursor: pointer;
-    margin-top: 5px;
     position: relative;
     line-height: initial;
+    padding-top: 22px;
     .user-avatar {
       width: 40px;
       height: 40px;

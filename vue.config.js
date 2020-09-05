@@ -23,7 +23,7 @@ let externals = {
 };
 module.exports = {
   //基本路径
-  publicPath: "/dist/",
+  publicPath: "/",
   //输出文件目录
   outputDir: "dist",
   //放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
@@ -127,6 +127,16 @@ module.exports = {
     overlay: {
       warnings: true,
       errors: true
+    },
+    proxy: {
+      '/admin' : {
+        target: 'http://tperp.io',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/admin': '/admin'
+        }
+      }
     }
   },
   //定义scss全局变量

@@ -4,7 +4,7 @@
     <div class="login-form">
     <el-row :gutter="20">
       <el-col :lg="6" :sm="10" class="aa">
-          <h3>{{$t('login.system')}}</h3>
+          <h3>后台管理系统</h3>
           <el-form
             :model="ruleForm2"
             status-icon
@@ -13,18 +13,16 @@
             label-width="100px"
             class="login-ruleForm"
           >
-            <el-form-item :label="$t('login.username')" prop="username">
-              <el-input v-model="ruleForm2.username"></el-input>
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="ruleForm2.user_name"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('login.password')" prop="password">
+            <el-form-item label="密码" prop="password">
               <el-input type="password" v-model="ruleForm2.password" autocomplete="off" show-password></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
               <el-button @click="resetForm('ruleForm2')">重置</el-button>
             </el-form-item>
-            <div class='acount'><span>{{$t('login.username')}}</span>：admin&nbsp;&nbsp;<span>{{$t('login.password')}}</span>:any</div>
-            <div class='acount'><span>{{$t('login.username')}}</span>：user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{$t('login.password')}}</span>:any</div>
           </el-form>
       </el-col>
     </el-row>
@@ -33,7 +31,8 @@
   </div>
 </template>
 <script>
-import { login } from "@api";
+import { login } from "../../api/login";
+import store from '../../store/store'
 import { messages } from "@assets/js/common.js";
 export default {
   name: "login",
@@ -57,39 +56,36 @@ export default {
     };
     return {
       ruleForm2: {
-        password: "admin",
-        username: "admin"
+        password: "",
+        user_name: ""
       },
       rules2: {
         password: [{ validator: validatePass, trigger: "blur" }],
-        username: [{ validator: validateName, trigger: "blur" }]
+        user_name: [{ validator: validateName, trigger: "blur" }]
       }
     };
   },
   methods: {
      submitForm(formName) {
+       let that = this
       this.$refs[formName].validate(valid => {
         if (valid) {
           //这里模拟管理员以及用户两种权限,一般的都是登陆后接口传过来
-          let roles=[]
-          roles.push(this.ruleForm2.username)
-          this.$store.commit("COMMIT_ROLE", roles);
-          this.$router.push({
-                path: "/home"
-              });
-          // login(this.ruleForm2)
-          //   .then(res => {
-          //     console.log(res)
-          //     //提交数据到vuex
-          //     this.$store.commit("COMMIT_TOKEN", res);
-          //     this.$message('success',res.message)
-          //     this.$router.push({
-          //       path: "/"
+          // let roles=[]
+          // roles.push(this.ruleForm2.user_name)
+          // this.$store.commit("COMMIT_ROLE", roles);
+          // this.$router.push({
+          //       path: "/home"
           //     });
-          //   })
-          //   .catch(err => {
-          //     this.$message("error", err.message);
-          //   });
+
+          login(this.ruleForm2).then(res => {
+            if (res.code === 1) {
+              that.$store.commit("COMMIT_TOKEN", {token: res.token});
+              this.$router.push({path: "/home"})
+            }
+          }).catch(err => {
+            this.$message("error", err.msg)
+          })
         } else {
           return false;
         }

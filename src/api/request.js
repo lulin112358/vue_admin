@@ -20,8 +20,9 @@ axios.interceptors.request.use(
             text: "正在加载中......",
             fullscreen: true
         });
+        // 设置请求头
         if (store.state.token) {
-            config.headers["Authorization"] = "Bearer " + store.state.token;
+            config.headers["token"] = store.state.token;
         }
         return config;
     },
@@ -41,9 +42,17 @@ axios.interceptors.response.use(
                 loading.close();
             }
             const res = response.data;
-            if (res.err_code === 0) {
+            console.log(res)
+            if (res.code === 1) {
+                messages('success', res.msg)
                 resolve(res)
             } else{
+                messages('error', res.msg)
+                if (res.code === 4) {
+                    store.commit("COMMIT_TOKEN", {token: ""});
+                    router.push({path: "/login"})
+                }
+
                 reject(res)
             }
         })
@@ -127,6 +136,44 @@ export function post(url, params) {
     return new Promise((resolve, reject) => {
         axios
             .post(url, params)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
+/*
+ *put方法，对应post请求
+ *@param {String} url [请求的url地址]
+ *@param {Object} params [请求时候携带的参数]
+ */
+export function put(url, params) {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(url, params)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
+/*
+ *delete方法，对应post请求
+ *@param {String} url [请求的url地址]
+ *@param {Object} params [请求时候携带的参数]
+ */
+export function del(url, params) {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(url, {
+                params
+            })
             .then(res => {
                 resolve(res);
             })

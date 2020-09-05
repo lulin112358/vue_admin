@@ -3,12 +3,12 @@ export const menu = [
   {
     icon: "el-icon-news",
     index: "home",
-    title: "home"
+    title: "客服订单管理"
   },
   {
     icon: "el-icon-edit",
     index: "icon",
-    title: "icon",
+    title: "图标",
     subs: [
       {
         index: "element",
@@ -23,7 +23,7 @@ export const menu = [
   {
     icon: "el-icon-setting",
     index: "component",
-    title: "component",
+    title: "组件",
     subs: [
       {
         index: "editor",
@@ -53,7 +53,7 @@ export const menu = [
   {
     icon: "el-icon-rank",
     index: "draggable",
-    title: "draggable",
+    title: "拖拽排序",
     subs: [
       {
         index: "draglist",
@@ -68,7 +68,7 @@ export const menu = [
   {
     icon: "el-icon-document",
     index: "charts",
-    title: "charts",
+    title: "图表",
     subs: [
       {
         index: "cricle",
@@ -79,12 +79,12 @@ export const menu = [
   {
     icon: "el-icon-folder",
     index: "formDesign",
-    title: "formDesign"
+    title: "拖拽表格"
   },
   {
     icon: "el-icon-question",
     index: "permission",
-    title: "permission",
+    title: "权限",
     subs: [
       {
         index: "permissionMenu",
@@ -102,7 +102,7 @@ export const menu = [
   {
     icon: "el-icon-warning",
     index: "error",
-    title: "error",
+    title: "404",
     subs: [
       {
         index: "404",
@@ -111,8 +111,22 @@ export const menu = [
     ]
   },
   {
-    icon: "el-icon-mobile-phone",
-    index: "https://github.com/zhuyihe/vue-admin-project",
-    title: "link"
-  }
+    icon: "el-icon-setting",
+    index: "setting",
+    title: "系统设置",
+    subs: [
+      {
+        index: "menu",
+        title: "菜单管理"
+      },
+      {
+        index: "role",
+        title: "角色管理"
+      },
+      {
+        index: "user",
+        title: "用户管理"
+      }
+    ]
+  },
 ];

@@ -33,7 +33,6 @@ export default {
     min-height: 100%;
     -webkit-transition: margin-left 0.28s;
     transition: margin-left 0.28s;
-    margin-left: 180px;
     position: relative;
   }
   .container_collapse {

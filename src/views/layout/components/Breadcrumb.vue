@@ -6,7 +6,7 @@
           <el-breadcrumb-item
             :to="activeList.indexOf(item)==-1?'':{ path: '/'+item }"
             :key="index"
-          >{{$t('route.'+item)}}</el-breadcrumb-item>
+          >{{item}}</el-breadcrumb-item>
         </template>
       </transition-group>
     </el-breadcrumb>
